@@ -1,9 +1,14 @@
 package net.dodkins.qiktip;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -21,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Button calcTipButton;
     private TextView tipView;
 
-
+    boolean roundUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +65,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+
+        menu.findItem(R.id.roundUp).setChecked(roundUp);
+           return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.roundUp:
+               roundUp = !roundUp;
+                item.setChecked(roundUp);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private void calculateTip(Double totalBill) {
         tipView = findViewById(R.id.tipView);
         Double tip = totalBill * 0.125;
 
+        if (roundUp) {
+            tip = Math.ceil(tip);
+        }
         NumberFormat numberFormat = DecimalFormat.getCurrencyInstance();
         tipView.setText(numberFormat.format(tip));
     }
