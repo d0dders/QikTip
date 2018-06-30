@@ -1,9 +1,11 @@
 package net.dodkins.qiktip;
 
+import android.app.Activity;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText billTotalInput;
     private Button calcTipButton;
     private TextView tipView;
+
 
 
     @Override
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Hide the damn keyboard
+               ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
+                        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 
                 // Calculate the tip to offer
                 try {
@@ -49,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         calcTipButton.setOnClickListener(listener);
+
+
+
     }
 
     private void calculateTip(Double totalBill) {
@@ -58,4 +67,6 @@ public class MainActivity extends AppCompatActivity {
         NumberFormat numberFormat = DecimalFormat.getCurrencyInstance();
         tipView.setText(numberFormat.format(tip));
     }
+
+
 }
