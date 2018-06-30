@@ -45,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard(MainActivity.this);
                 // Hide the damn keyboard
-               ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
-                        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+               /*((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
+                        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);*/
 
                 // Calculate the tip to offer
                 try {
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         calcTipButton.setOnClickListener(listener);
-
 
 
     }
@@ -83,6 +83,18 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     private void calculateTip(Double totalBill) {
         tipView = findViewById(R.id.tipView);
         Double tip = totalBill * 0.125;
