@@ -21,12 +21,41 @@ import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String KEY_COLOUR = "KEY_COLOUR";
+    private static final String KEY_TOTAL = "KEY_TOTAL";
     private ConstraintLayout constraintLayout;
     private EditText billTotalInput;
     private Button calcTipButton;
     private TextView tipView;
+    private int mColor;
+    private double mTotalBill;
 
     boolean roundUp = false;
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        //constraintLayout = findViewById(R.id.layout);
+        //calcTipButton = findViewById(R.id.calcTipButton);
+        mTotalBill = savedInstanceState.getDouble(KEY_TOTAL);
+        mColor = savedInstanceState.getInt(KEY_COLOUR);
+
+        constraintLayout.setBackgroundColor(mColor);
+        calcTipButton.setTextColor(mColor);
+
+        calculateTip(mTotalBill);
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putDouble(KEY_TOTAL, mTotalBill);
+        outState.putInt(KEY_COLOUR, mColor);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout = findViewById(R.id.layout);
         calcTipButton = findViewById(R.id.calcTipButton);
         ColorWheel colorWheel = new ColorWheel();
-        int color = colorWheel.getColor();
-        constraintLayout.setBackgroundColor(color);
-        calcTipButton.setTextColor(color);
+        mColor = colorWheel.getColor();
+        constraintLayout.setBackgroundColor(mColor);
+        calcTipButton.setTextColor(mColor);
 
         billTotalInput = findViewById(R.id.billTotalInput);
 
@@ -52,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // Calculate the tip to offer
                 try {
-                    Double totalBill = Double.valueOf(billTotalInput.getText().toString());
-                    calculateTip(totalBill);
+                    mTotalBill = Double.valueOf(billTotalInput.getText().toString());
+                    calculateTip(mTotalBill);
                 } catch (NumberFormatException e) {
                     Toast.makeText(MainActivity.this, "If it's free, just get up and leave!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
