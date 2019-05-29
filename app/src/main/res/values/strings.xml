@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Qik Tip</string>
+    <string name="calculate_good_tip_button_text">&#128077;</string>
+    <string name="calculate_ok_tip_button_text">&#128076;</string>
+    <string name="calculate_great_tip_button_text">&#129304;</string>
 </resources>

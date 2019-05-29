@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout.setBackgroundColor(mColor);
         calcTipButton.setTextColor(mColor);
 
-        calculateTip(mTotalBill);
+        //TODO: replace the below
+        //calculateTip(mTotalBill);
 
 
     }
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         outState.putDouble(KEY_TOTAL, mTotalBill);
         outState.putInt(KEY_COLOUR, mColor);
+        //TODO: store and restore tip amoun
     }
 
     @Override
@@ -71,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
 
         billTotalInput = findViewById(R.id.billTotalInput);
 
-        View.OnClickListener listener = new View.OnClickListener() {
+ /*       View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hideKeyboard(MainActivity.this);
                 // Hide the damn keyboard
-               /*((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
-                        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);*/
+               *//*((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
+                        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);*//*
 
                 // Calculate the tip to offer
                 try {
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        calcTipButton.setOnClickListener(listener);
+        calcTipButton.setOnClickListener(listener);*/
 
 
     }
@@ -124,9 +126,9 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void calculateTip(Double totalBill) {
+    private void calculateTip(Double totalBill, Double percentageAsDecimal) {
         tipView = findViewById(R.id.tipView);
-        Double tip = totalBill * 0.125;
+        Double tip = totalBill * percentageAsDecimal;
 
         if (roundUp) {
             tip = Math.ceil(tip);
@@ -136,4 +138,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void TipButtonHandler(View view) {
+
+            // Calculate the tip to offer
+            try {
+                mTotalBill = Double.valueOf(billTotalInput.getText().toString());
+                String viewTag = view.getTag().toString();
+                if(viewTag.equals("calcOkTipButton"))
+                {
+                    calculateTip(mTotalBill, 0.1);
+                }
+                else if(viewTag.equals("calcTipButton"))
+                {
+                    calculateTip(mTotalBill, 0.125);
+                }
+                else
+                {
+                    calculateTip(mTotalBill, 0.15);
+                }
+
+            } catch (NumberFormatException e) {
+                Toast.makeText(MainActivity.this, "If it's free, just get up and leave!", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+
+
+
+    }
 }
