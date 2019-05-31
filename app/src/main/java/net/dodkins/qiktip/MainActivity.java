@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_COLOUR = "KEY_COLOUR";
     private static final String KEY_TOTAL = "KEY_TOTAL";
+    private static final String KEY_TIP = "KEY_TIP";
     private ConstraintLayout constraintLayout;
     private EditText billTotalInput;
     private Button calcTipButton;
@@ -33,17 +34,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        //constraintLayout = findViewById(R.id.layout);
-        //calcTipButton = findViewById(R.id.calcTipButton);
         mTotalBill = savedInstanceState.getDouble(KEY_TOTAL);
         mColor = savedInstanceState.getInt(KEY_COLOUR);
-
         constraintLayout.setBackgroundColor(mColor);
         calcTipButton.setTextColor(mColor);
-
-        //TODO: replace the below
-        //calculateTip(mTotalBill);
-
+        tipView.setText(savedInstanceState.getString(KEY_TIP));
 
     }
 
@@ -53,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         outState.putDouble(KEY_TOTAL, mTotalBill);
         outState.putInt(KEY_COLOUR, mColor);
-        //TODO: store and restore tip amoun
+        outState.putString(KEY_TIP, tipView.getText().toString());
     }
 
     @Override
@@ -67,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mColor = colorWheel.getColor();
         constraintLayout.setBackgroundColor(mColor);
         calcTipButton.setTextColor(mColor);
-
+        tipView = findViewById(R.id.tipView);
         billTotalInput = findViewById(R.id.billTotalInput);
 
     }
@@ -103,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void calculateTip(Double totalBill, Double percentageAsDecimal) {
-        tipView = findViewById(R.id.tipView);
+        //tipView = findViewById(R.id.tipView);
         Double tip = totalBill * percentageAsDecimal;
 
         if (roundUp) {
