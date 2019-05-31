@@ -1,9 +1,6 @@
 package net.dodkins.qiktip;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,34 +62,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         constraintLayout = findViewById(R.id.layout);
-        calcTipButton = findViewById(R.id.calcTipButton);
+        calcTipButton = findViewById(R.id.calcGoodTipButton);
         ColorWheel colorWheel = new ColorWheel();
         mColor = colorWheel.getColor();
         constraintLayout.setBackgroundColor(mColor);
         calcTipButton.setTextColor(mColor);
 
         billTotalInput = findViewById(R.id.billTotalInput);
-
- /*       View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideKeyboard(MainActivity.this);
-                // Hide the damn keyboard
-               *//*((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE))
-                        .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);*//*
-
-                // Calculate the tip to offer
-                try {
-                    mTotalBill = Double.valueOf(billTotalInput.getText().toString());
-                    calculateTip(mTotalBill);
-                } catch (NumberFormatException e) {
-                    Toast.makeText(MainActivity.this, "If it's free, just get up and leave!", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-            }
-        };
-        calcTipButton.setOnClickListener(listener);*/
-
 
     }
 
@@ -139,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void TipButtonHandler(View view) {
+            hideKeyboard(MainActivity.this);
 
             // Calculate the tip to offer
             try {
@@ -148,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     calculateTip(mTotalBill, 0.1);
                 }
-                else if(viewTag.equals("calcTipButton"))
+                else if(viewTag.equals("calcGoodTipButton"))
                 {
                     calculateTip(mTotalBill, 0.125);
                 }
